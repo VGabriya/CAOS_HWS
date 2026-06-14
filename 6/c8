@@ -1,0 +1,20 @@
+#!/bin/sh
+# Asks the user for a name and prints a welcome message.
+# If the user types a name and presses Enter  -> "Hello, <name>!"
+# If the user does NOT press Enter (times out) -> "Hello, tmpuser?"
+#
+# Notes from the research part of the task:
+#  * `read` returns exit status 0 on success; non-zero on EOF or timeout
+#    (see `help read`, not `man read`, since read is a shell builtin).
+#  * To suppress the trailing newline after echo use `echo -n` (bash/zsh),
+#    but the most portable way is `printf` (no implicit newline at all),
+#    which is what we use below.
+
+printf "Enter your name: "
+
+if read -t 5 name && [ -n "$name" ]; then
+    echo "Hello, $name!"
+else
+    echo                       # move to a new line after the timeout
+    echo "Hello, tmpuser?"
+fi
